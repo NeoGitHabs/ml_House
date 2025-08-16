@@ -7,7 +7,6 @@ from enum import Enum as PyEnum
 
 
 class ROLE_CHOICES(str, PyEnum):
-    admin = 'admin'
     seller = 'seller'
     buyer = 'buyer'
 
@@ -25,7 +24,6 @@ class UserProfile(Base):
     role: Mapped[ROLE_CHOICES] = mapped_column(Enum(ROLE_CHOICES))
     created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc))
 
-    seller_properties: Mapped[List['Property']] = relationship('Property', back_populates='seller', cascade='all, delete-orphan')
     seller_reviews: Mapped[List['Review']] = relationship('Review', back_populates='seller', foreign_keys='Review.seller_id', cascade='all, delete-orphan')
     buyer_reviews: Mapped[List['Review']] = relationship( 'Review', back_populates='buyer', foreign_keys='Review.buyer_id', cascade='all, delete-orphan')
     seller_property: Mapped[List['Property']] = relationship( 'Property', back_populates='seller', cascade='all, delete-orphan')
@@ -72,6 +70,7 @@ class CHOICE_CITY(str, PyEnum):
 
 class Property(Base):
     __tablename__ = 'property'
+
     id: Mapped[int] = mapped_column(Integer, autoincrement=True, primary_key=True)
     title: Mapped[str] = mapped_column(String(500))
     description: Mapped[str] = mapped_column(Text)
