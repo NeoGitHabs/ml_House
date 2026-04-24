@@ -1,10 +1,15 @@
 from fastapi import APIRouter
 import joblib
 from db.schema import HousePredictSchema
+from pathlib import Path
 
 
-scaler = joblib.load('scaler.pkl')
-model = joblib.load('lin_model.pkl')
+
+BASE_DIR = Path(__file__).parent
+
+model = joblib.load(BASE_DIR / 'model_tree.pkl')
+scaler = joblib.load(BASE_DIR / 'scaler.pkl')
+
 
 lin_predict_router = APIRouter(prefix='/lin_predict', tags=['Linear Predict Price'])
 
